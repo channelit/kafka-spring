@@ -27,7 +27,8 @@ resource "aws_msk_cluster" "air" {
 
   broker_node_group_info {
     instance_type  = "kafka.t3.small"
-    client_subnets = concat(aws_subnet.air_subnets_public[*].id, aws_subnet.air_subnets_private[*].id)
+    #    client_subnets = concat(aws_subnet.air_subnets_public[*].id, aws_subnet.air_subnets_private[*].id)
+    client_subnets = aws_subnet.air_subnets_public[*].id
     storage_info {
       ebs_storage_info {
         volume_size = 1000
@@ -55,6 +56,11 @@ resource "aws_msk_cluster" "air" {
     sasl {
       scram = true
     }
+  }
+
+  configuration_info {
+    arn      = aws_msk_configuration.air_msk_config.arn
+    revision = aws_msk_configuration.air_msk_config.latest_revision
   }
 
   logging_info {
@@ -93,7 +99,7 @@ resource "aws_msk_scram_secret_association" "air" {
 }
 
 resource "aws_secretsmanager_secret" "air" {
-  name       = "AmazonMSK_${local.name_prefix}-sg-${local.name_suffix}"
+  name       = "AmazonMSK_${local.name_prefix}-sg-${local.name_suffix}2"
   kms_key_id = aws_kms_key.air.key_id
 }
 
@@ -124,4 +130,26 @@ data "aws_iam_policy_document" "air_secret_policy" {
 resource "aws_secretsmanager_secret_policy" "air" {
   secret_arn = aws_secretsmanager_secret.air.arn
   policy     = data.aws_iam_policy_document.air_secret_policy.json
+}
+
+resource "aws_msk_configuration" "air_msk_config" {
+  kafka_versions = ["3.6.0"]
+  name           = "${local.name_prefix}-msk-config-${local.name_suffix}2"
+
+  server_properties = <<PROPERTIES
+      allow.everyone.if.no.acl.found = false
+      auto.create.topics.enable=true
+      default.replication.factor=3
+      min.insync.replicas=2
+      num.io.threads=8
+      num.network.threads=5
+      num.partitions=1
+      num.replica.fetchers=2
+      replica.lag.time.max.ms=30000
+      socket.receive.buffer.bytes=102400
+      socket.request.max.bytes=104857600
+      socket.send.buffer.bytes=102400
+      unclean.leader.election.enable=true
+      zookeeper.session.timeout.ms=18000
+    PROPERTIES
 }

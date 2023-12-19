@@ -1,5 +1,5 @@
 resource "aws_vpc" "air_vpc" {
-  cidr_block = "192.168.0.0/24"
+  cidr_block = "192.168.0.0/16"
   tags       = {
     Name = "${local.name_prefix}-vpc-${local.name_suffix}"
   }
