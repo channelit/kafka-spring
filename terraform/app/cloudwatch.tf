@@ -1,10 +1,10 @@
-
 resource "aws_cloudwatch_log_group" "air_log" {
   name = "${local.name_prefix}-msk-logs-${local.name_suffix}"
 }
 
 resource "aws_s3_bucket" "air_log_s3" {
-  bucket = "${local.name_prefix}-msk-logs-${local.name_suffix}"
+  bucket        = "${local.name_prefix}-msk-logs-${local.name_suffix}"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_acl" "air_bucket_acl" {

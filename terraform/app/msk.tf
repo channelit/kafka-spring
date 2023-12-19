@@ -1,5 +1,5 @@
-
 resource "aws_security_group" "air_sg" {
+  name   = "${local.name_prefix}-sg-${local.name_suffix}"
   vpc_id = aws_vpc.air_vpc.id
 }
 
@@ -21,23 +21,18 @@ data "aws_iam_policy_document" "air_assume_role" {
 }
 
 resource "aws_msk_cluster" "air" {
-  cluster_name           = "air"
+  cluster_name           = "${local.name_prefix}-msk-cluster-${local.name_suffix}"
   kafka_version          = "3.6.0"
   number_of_broker_nodes = 3
 
   broker_node_group_info {
     instance_type  = "kafka.t3.small"
-    client_subnets = [
-      aws_subnet.air_subnet_az1.id,
-      aws_subnet.air_subnet_az2.id,
-      aws_subnet.air_subnet_az3.id
-    ]
+    client_subnets = concat(aws_subnet.air_subnets_public[*].id, aws_subnet.air_subnets_private[*].id)
     storage_info {
       ebs_storage_info {
         volume_size = 1000
       }
     }
-
     security_groups = [aws_security_group.air_sg.id]
   }
 
@@ -98,11 +93,11 @@ resource "aws_msk_scram_secret_association" "air" {
 }
 
 resource "aws_secretsmanager_secret" "air" {
-  name       = "AmazonMSK_example"
-  kms_key_id = aws_kms_key.example.key_id
+  name       = "AmazonMSK_${local.name_prefix}-sg-${local.name_suffix}"
+  kms_key_id = aws_kms_key.air.key_id
 }
 
-resource "aws_kms_key" "example" {
+resource "aws_kms_key" "air" {
   description = "Example Key for MSK Cluster Scram Secret Association"
 }
 
