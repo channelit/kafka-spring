@@ -99,7 +99,7 @@ resource "aws_msk_scram_secret_association" "air" {
 }
 
 resource "aws_secretsmanager_secret" "air" {
-  name       = "AmazonMSK_${local.name_prefix}-sg-${local.name_suffix}2"
+  name       = "AmazonMSK_${local.name_prefix}-sg-${local.name_suffix}4"
   kms_key_id = aws_kms_key.air.key_id
 }
 
@@ -109,7 +109,7 @@ resource "aws_kms_key" "air" {
 
 resource "aws_secretsmanager_secret_version" "air" {
   secret_id     = aws_secretsmanager_secret.air.id
-  secret_string = jsonencode({ username = "user", password = "pass" })
+  secret_string = jsonencode({ username = "scott", password = "tiger" })
 }
 
 data "aws_iam_policy_document" "air_secret_policy" {
@@ -134,10 +134,10 @@ resource "aws_secretsmanager_secret_policy" "air" {
 
 resource "aws_msk_configuration" "air_msk_config" {
   kafka_versions = ["3.6.0"]
-  name           = "${local.name_prefix}-msk-config-${local.name_suffix}2"
+  name           = "${local.name_prefix}-msk-config-${local.name_suffix}"
 
   server_properties = <<PROPERTIES
-      allow.everyone.if.no.acl.found = false
+      allow.everyone.if.no.acl.found=false
       auto.create.topics.enable=true
       default.replication.factor=3
       min.insync.replicas=2
