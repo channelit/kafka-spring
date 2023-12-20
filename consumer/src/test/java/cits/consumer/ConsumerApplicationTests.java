@@ -1,10 +1,10 @@
-package cits.kafkaspring;
+package cits.consumer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class KafkaSpringApplicationTests {
+class ConsumerApplicationTests {
 
     @Test
     void contextLoads() {
