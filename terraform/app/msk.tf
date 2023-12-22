@@ -99,7 +99,7 @@ resource "aws_msk_scram_secret_association" "air" {
 }
 
 resource "aws_secretsmanager_secret" "air" {
-  name       = "AmazonMSK_${local.name_prefix}-sg-${local.name_suffix}4"
+  name       = "AmazonMSK_${local.name_prefix}-sg-${local.name_suffix}5"
   kms_key_id = aws_kms_key.air.key_id
 }
 
