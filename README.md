@@ -55,5 +55,16 @@ debug=false
 
 #### start schema-registry locally
 ```shell
+./bin/schema-registry-start schema-registry.properties
+```
 
+### Kafdrop UI http://localhost:9000/
+```shell
+curl https://github.com/obsidiandynamics/kafdrop/releases/download/4.0.1/kafdrop-4.0.1.jar -o kafdrop.jar
+java --add-opens=java.base/sun.nio.ch=ALL-UNNAMED \
+    -jar kafdrop.jar \
+    --kafka.brokerConnect=localhost:9092 \
+    --schemaregistry.connect=http://localhost:8081 \
+    --message.format=AVRO \
+    --message.keyFormat=DEFAULT
 ```

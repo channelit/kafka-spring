@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
@@ -21,10 +18,10 @@ public class ProducerController {
     @Autowired
     private KafkaTemplate<String, ClientMessage> template;
 
-    @Value("${topic}")
+    @Value("${spring.kafka.properties.topic}")
     private String topicName;
 
-    @PostMapping(path = "/send")
+    @GetMapping(path = "/send")
     public void send(@RequestParam int num) {
         MsgGenerator.getMessages(num).forEach(message -> {
             ClientMessage clientMessage = ClientMessage.newBuilder()
