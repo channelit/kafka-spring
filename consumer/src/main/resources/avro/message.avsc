@@ -1,0 +1,27 @@
+{
+  "type": "record",
+  "namespace": "air",
+  "name": "ClientMessage",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "key",
+      "type": "string"
+    },
+    {
+      "name": "message",
+      "type": "string"
+    },
+    {
+      "name": "generated_at",
+      "type": "long"
+    }
+  ]
+}
