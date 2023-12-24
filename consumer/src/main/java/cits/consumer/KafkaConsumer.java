@@ -10,6 +10,6 @@ public class KafkaConsumer {
     @KafkaListener(topics = "${spring.kafka.properties.topic}")
     void topicListener(ClientMessage clientMessage) {
         System.out.println("Received: " + clientMessage.toString());
-
     }
+
 }

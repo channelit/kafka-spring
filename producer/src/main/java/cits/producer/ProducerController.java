@@ -24,9 +24,12 @@ public class ProducerController {
     @GetMapping(path = "/send")
     public void send(@RequestParam int num) {
         MsgGenerator.getMessages(num).forEach(message -> {
+            String[] vals = message.getValue().split(",");
             ClientMessage clientMessage = ClientMessage.newBuilder()
+                    .setId(Integer.parseInt(vals[1]))
                     .setKey(message.getKey())
-                    .setClient(message.getKey())
+                    .setClient(vals[0])
+                    .setMessage(message.getValue())
                     .setGeneratedAt(Instant.now().toEpochMilli())
                     .build();
             CompletableFuture<SendResult<String, ClientMessage>> future = template.send(topicName, clientMessage.getKey().toString(), clientMessage);

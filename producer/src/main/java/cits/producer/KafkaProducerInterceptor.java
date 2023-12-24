@@ -7,7 +7,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.util.Map;
 
-public class ClientMessageProducerInterceptor implements ProducerInterceptor<String, ClientMessage> {
+public class KafkaProducerInterceptor implements ProducerInterceptor<String, ClientMessage> {
 
 
     @Override
