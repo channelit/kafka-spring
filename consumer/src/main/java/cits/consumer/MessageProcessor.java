@@ -1,7 +1,9 @@
 package cits.consumer;
 
 import air.ClientMessage;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MessageProcessor {
 
     public void processMessage(ClientMessage clientMessage) {

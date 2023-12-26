@@ -68,3 +68,12 @@ java --add-opens=java.base/sun.nio.ch=ALL-UNNAMED \
     --message.format=AVRO \
     --message.keyFormat=DEFAULT
 ```
+
+
+### Run apps locally
+```shell
+java -jar producer/target/producer-0.0.1-SNAPSHOT.jar --server.port=8051
+java -jar consumer/target/consumer-0.0.1-SNAPSHOT.jar --server.port=8052
+java -jar consumer/target/consumer-0.0.1-SNAPSHOT.jar --server.port=8053
+java -jar consumer/target/consumer-0.0.1-SNAPSHOT.jar --server.port=8054
+```
