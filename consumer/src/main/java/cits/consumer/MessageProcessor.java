@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageProcessor {
 
-    public void processMessage(ClientMessage clientMessage) {
+    public void processMessage(ClientMessage clientMessage) throws RetryableMessageException {
         long id = clientMessage.getId();
         String message = String.format("Client %s MessageId %s", clientMessage.getClient(), clientMessage.getId());
         if (id % 4 == 0) {
