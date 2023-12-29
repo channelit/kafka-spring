@@ -1,4 +1,6 @@
 # kafka-spring
+
+#### Install Java and Create Topics from EC2
 ```
 sudo yum install java-21-amazon-corretto-devel
 wget https://downloads.apache.org/kafka/3.6.1/kafka_2.13-3.6.1.tgz
@@ -9,6 +11,11 @@ bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP_SERVERS --topic air.retry --cr
 bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP_SERVERS --topic air.dlq --create --command-config composer.properties
 bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP_SERVERS --list --command-config composer.properties
 bin/kafka-acls.sh --bootstrap-server $BOOTSTRAP_SERVERS --add --allow-principal "User:scott" --operation ALL --group “*” --topic air-topic
+```
+#### Increase Num Partitions
+```shell
+export BOOTSTRAP_SERVERS=localhost:9092
+bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP_SERVERS --alter --topic air-fluff --partitions 9
 ```
 
 ### composer.properties

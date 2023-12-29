@@ -10,6 +10,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -22,8 +23,8 @@ public class ProducerController {
     private String topicName;
 
     @GetMapping(path = "/send")
-    public void send(@RequestParam int num) {
-        MsgGenerator.getMessages(num).forEach(message -> {
+    public void send(@RequestParam int msg, @RequestParam int cli) {
+        MsgGenerator.getMessages(msg, cli).forEach(message -> {
             String[] vals = message.getValue().split(",");
             ClientMessage clientMessage = ClientMessage.newBuilder()
                     .setId(Integer.parseInt(vals[1]))
@@ -33,6 +34,7 @@ public class ProducerController {
                     .setGeneratedAt(Instant.now().toEpochMilli())
                     .build();
             CompletableFuture<SendResult<String, ClientMessage>> future = template.send(topicName, clientMessage.getKey().toString(), clientMessage);
+//            CompletableFuture<SendResult<String, ClientMessage>> future = template.send(topicName, clientMessage.getKey().toString() + "-" + UUID.randomUUID().toString(), clientMessage);
             future.whenComplete((sr, ex) -> {
                 if (sr != null) {
                     System.out.println("success");
