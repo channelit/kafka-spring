@@ -1,6 +1,7 @@
 package cits.producer;
 
 import air.ClientMessage;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.common.util.concurrent.ListenableFuture;
 import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class ProducerController {
             String[] vals = message.getValue().split(",");
             ClientMessage clientMessage = ClientMessage.newBuilder()
                     .setId(Integer.parseInt(vals[1]))
+                    .setUniqueId(UUID.randomUUID().toString())
                     .setKey(message.getKey())
                     .setClient(vals[0])
                     .setMessage(message.getValue())

@@ -83,4 +83,16 @@ java -jar producer/target/producer-0.0.1-SNAPSHOT.jar --server.port=8051
 java -jar consumer/target/consumer-0.0.1-SNAPSHOT.jar --server.port=8052
 java -jar consumer/target/consumer-0.0.1-SNAPSHOT.jar --server.port=8053
 java -jar consumer/target/consumer-0.0.1-SNAPSHOT.jar --server.port=8054
+java -jar stream/target/stream-0.0.1-SNAPSHOT.jar --server.port=8055
+```
+
+
+### ksqlDB
+```shell
+LIST TOPICS;
+SET 'auto.offset.reset' = 'earliest';
+CREATE STREAM air_stream WITH (kafka_topic='air-fluff', value_format='AVRO');
+CREATE TABLE air_latest WITH (value_format='AVRO') AS SELECT CLIENT, LATEST_BY_OFFSET(unique_id) as latest_id FROM air_stream GROUP BY CLIENT EMIT CHANGES;
+CREATE TABLE air_table (unique_id_key VARCHAR PRIMARY KEY) WITH (kafka_topic='air-fluff', value_format='AVRO');
+SELECT * FROM air_stream INNER JOIN air_table ON air_table.latest_id = air_stream.unique_id EMIT CHANGES;
 ```

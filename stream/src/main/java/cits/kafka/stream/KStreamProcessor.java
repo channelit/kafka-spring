@@ -10,15 +10,12 @@ import org.springframework.stereotype.Component;
 public class KStreamProcessor {
 
     @Value("${spring.kafka.properties.topic-one}")
-    private String texassalestopic;
+    private String outTopic;
 
     public void process(KStream<String, ClientMessage> stream) {
-        stream.filter(new Predicate<>() {
-            @Override
-            public boolean test(String key, ClientMessage object) {
-                return object != null && object.getClient() != null;
-            }
-        }).to(texassalestopic);
-
+        stream.filter((key, message) -> {
+            System.out.println(message.getClient());
+            return message != null && message.getClient() != null;
+        }).to(outTopic);
     }
 }

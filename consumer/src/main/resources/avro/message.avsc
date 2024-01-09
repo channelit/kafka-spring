@@ -8,6 +8,10 @@
       "type": "long"
     },
     {
+      "name": "unique_id",
+      "type": "string"
+    },
+    {
       "name": "client",
       "type": "string"
     },

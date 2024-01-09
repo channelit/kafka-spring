@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3236012883380419841L;
+  private static final long serialVersionUID = 6061018098794359058L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientMessage\",\"namespace\":\"air\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"client\",\"type\":\"string\"},{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"message\",\"type\":\"string\"},{\"name\":\"generated_at\",\"type\":\"long\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClientMessage\",\"namespace\":\"air\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"unique_id\",\"type\":\"string\"},{\"name\":\"client\",\"type\":\"string\"},{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"message\",\"type\":\"string\"},{\"name\":\"generated_at\",\"type\":\"long\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -74,6 +74,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
   }
 
   private long id;
+  private java.lang.CharSequence unique_id;
   private java.lang.CharSequence client;
   private java.lang.CharSequence key;
   private java.lang.CharSequence message;
@@ -89,13 +90,15 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
   /**
    * All-args constructor.
    * @param id The new value for id
+   * @param unique_id The new value for unique_id
    * @param client The new value for client
    * @param key The new value for key
    * @param message The new value for message
    * @param generated_at The new value for generated_at
    */
-  public ClientMessage(java.lang.Long id, java.lang.CharSequence client, java.lang.CharSequence key, java.lang.CharSequence message, java.lang.Long generated_at) {
+  public ClientMessage(java.lang.Long id, java.lang.CharSequence unique_id, java.lang.CharSequence client, java.lang.CharSequence key, java.lang.CharSequence message, java.lang.Long generated_at) {
     this.id = id;
+    this.unique_id = unique_id;
     this.client = client;
     this.key = key;
     this.message = message;
@@ -113,10 +116,11 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return id;
-    case 1: return client;
-    case 2: return key;
-    case 3: return message;
-    case 4: return generated_at;
+    case 1: return unique_id;
+    case 2: return client;
+    case 3: return key;
+    case 4: return message;
+    case 5: return generated_at;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -127,10 +131,11 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.lang.Long)value$; break;
-    case 1: client = (java.lang.CharSequence)value$; break;
-    case 2: key = (java.lang.CharSequence)value$; break;
-    case 3: message = (java.lang.CharSequence)value$; break;
-    case 4: generated_at = (java.lang.Long)value$; break;
+    case 1: unique_id = (java.lang.CharSequence)value$; break;
+    case 2: client = (java.lang.CharSequence)value$; break;
+    case 3: key = (java.lang.CharSequence)value$; break;
+    case 4: message = (java.lang.CharSequence)value$; break;
+    case 5: generated_at = (java.lang.Long)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -150,6 +155,23 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
    */
   public void setId(long value) {
     this.id = value;
+  }
+
+  /**
+   * Gets the value of the 'unique_id' field.
+   * @return The value of the 'unique_id' field.
+   */
+  public java.lang.CharSequence getUniqueId() {
+    return unique_id;
+  }
+
+
+  /**
+   * Sets the value of the 'unique_id' field.
+   * @param value the value to set.
+   */
+  public void setUniqueId(java.lang.CharSequence value) {
+    this.unique_id = value;
   }
 
   /**
@@ -262,6 +284,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
     implements org.apache.avro.data.RecordBuilder<ClientMessage> {
 
     private long id;
+    private java.lang.CharSequence unique_id;
     private java.lang.CharSequence client;
     private java.lang.CharSequence key;
     private java.lang.CharSequence message;
@@ -282,21 +305,25 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.client)) {
-        this.client = data().deepCopy(fields()[1].schema(), other.client);
+      if (isValidValue(fields()[1], other.unique_id)) {
+        this.unique_id = data().deepCopy(fields()[1].schema(), other.unique_id);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.key)) {
-        this.key = data().deepCopy(fields()[2].schema(), other.key);
+      if (isValidValue(fields()[2], other.client)) {
+        this.client = data().deepCopy(fields()[2].schema(), other.client);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.message)) {
-        this.message = data().deepCopy(fields()[3].schema(), other.message);
+      if (isValidValue(fields()[3], other.key)) {
+        this.key = data().deepCopy(fields()[3].schema(), other.key);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.generated_at)) {
-        this.generated_at = data().deepCopy(fields()[4].schema(), other.generated_at);
+      if (isValidValue(fields()[4], other.message)) {
+        this.message = data().deepCopy(fields()[4].schema(), other.message);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
+      }
+      if (isValidValue(fields()[5], other.generated_at)) {
+        this.generated_at = data().deepCopy(fields()[5].schema(), other.generated_at);
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
     }
 
@@ -310,21 +337,25 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.client)) {
-        this.client = data().deepCopy(fields()[1].schema(), other.client);
+      if (isValidValue(fields()[1], other.unique_id)) {
+        this.unique_id = data().deepCopy(fields()[1].schema(), other.unique_id);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.key)) {
-        this.key = data().deepCopy(fields()[2].schema(), other.key);
+      if (isValidValue(fields()[2], other.client)) {
+        this.client = data().deepCopy(fields()[2].schema(), other.client);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.message)) {
-        this.message = data().deepCopy(fields()[3].schema(), other.message);
+      if (isValidValue(fields()[3], other.key)) {
+        this.key = data().deepCopy(fields()[3].schema(), other.key);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.generated_at)) {
-        this.generated_at = data().deepCopy(fields()[4].schema(), other.generated_at);
+      if (isValidValue(fields()[4], other.message)) {
+        this.message = data().deepCopy(fields()[4].schema(), other.message);
         fieldSetFlags()[4] = true;
+      }
+      if (isValidValue(fields()[5], other.generated_at)) {
+        this.generated_at = data().deepCopy(fields()[5].schema(), other.generated_at);
+        fieldSetFlags()[5] = true;
       }
     }
 
@@ -368,6 +399,46 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
     }
 
     /**
+      * Gets the value of the 'unique_id' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getUniqueId() {
+      return unique_id;
+    }
+
+
+    /**
+      * Sets the value of the 'unique_id' field.
+      * @param value The value of 'unique_id'.
+      * @return This builder.
+      */
+    public air.ClientMessage.Builder setUniqueId(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.unique_id = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'unique_id' field has been set.
+      * @return True if the 'unique_id' field has been set, false otherwise.
+      */
+    public boolean hasUniqueId() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'unique_id' field.
+      * @return This builder.
+      */
+    public air.ClientMessage.Builder clearUniqueId() {
+      unique_id = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'client' field.
       * @return The value.
       */
@@ -382,9 +453,9 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public air.ClientMessage.Builder setClient(java.lang.CharSequence value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.client = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -393,7 +464,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'client' field has been set, false otherwise.
       */
     public boolean hasClient() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -403,7 +474,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       */
     public air.ClientMessage.Builder clearClient() {
       client = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -422,9 +493,9 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public air.ClientMessage.Builder setKey(java.lang.CharSequence value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.key = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -433,7 +504,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'key' field has been set, false otherwise.
       */
     public boolean hasKey() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -443,7 +514,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       */
     public air.ClientMessage.Builder clearKey() {
       key = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -462,9 +533,9 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public air.ClientMessage.Builder setMessage(java.lang.CharSequence value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.message = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -473,7 +544,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'message' field has been set, false otherwise.
       */
     public boolean hasMessage() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -483,7 +554,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       */
     public air.ClientMessage.Builder clearMessage() {
       message = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -502,9 +573,9 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public air.ClientMessage.Builder setGeneratedAt(long value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.generated_at = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -513,7 +584,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return True if the 'generated_at' field has been set, false otherwise.
       */
     public boolean hasGeneratedAt() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -522,7 +593,7 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       * @return This builder.
       */
     public air.ClientMessage.Builder clearGeneratedAt() {
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -532,10 +603,11 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       try {
         ClientMessage record = new ClientMessage();
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.Long) defaultValue(fields()[0]);
-        record.client = fieldSetFlags()[1] ? this.client : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.key = fieldSetFlags()[2] ? this.key : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.message = fieldSetFlags()[3] ? this.message : (java.lang.CharSequence) defaultValue(fields()[3]);
-        record.generated_at = fieldSetFlags()[4] ? this.generated_at : (java.lang.Long) defaultValue(fields()[4]);
+        record.unique_id = fieldSetFlags()[1] ? this.unique_id : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.client = fieldSetFlags()[2] ? this.client : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.key = fieldSetFlags()[3] ? this.key : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.message = fieldSetFlags()[4] ? this.message : (java.lang.CharSequence) defaultValue(fields()[4]);
+        record.generated_at = fieldSetFlags()[5] ? this.generated_at : (java.lang.Long) defaultValue(fields()[5]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -570,6 +642,8 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
   {
     out.writeLong(this.id);
 
+    out.writeString(this.unique_id);
+
     out.writeString(this.client);
 
     out.writeString(this.key);
@@ -587,6 +661,8 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
     if (fieldOrder == null) {
       this.id = in.readLong();
 
+      this.unique_id = in.readString(this.unique_id instanceof Utf8 ? (Utf8)this.unique_id : null);
+
       this.client = in.readString(this.client instanceof Utf8 ? (Utf8)this.client : null);
 
       this.key = in.readString(this.key instanceof Utf8 ? (Utf8)this.key : null);
@@ -596,25 +672,29 @@ public class ClientMessage extends org.apache.avro.specific.SpecificRecordBase i
       this.generated_at = in.readLong();
 
     } else {
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 6; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.id = in.readLong();
           break;
 
         case 1:
-          this.client = in.readString(this.client instanceof Utf8 ? (Utf8)this.client : null);
+          this.unique_id = in.readString(this.unique_id instanceof Utf8 ? (Utf8)this.unique_id : null);
           break;
 
         case 2:
-          this.key = in.readString(this.key instanceof Utf8 ? (Utf8)this.key : null);
+          this.client = in.readString(this.client instanceof Utf8 ? (Utf8)this.client : null);
           break;
 
         case 3:
-          this.message = in.readString(this.message instanceof Utf8 ? (Utf8)this.message : null);
+          this.key = in.readString(this.key instanceof Utf8 ? (Utf8)this.key : null);
           break;
 
         case 4:
+          this.message = in.readString(this.message instanceof Utf8 ? (Utf8)this.message : null);
+          break;
+
+        case 5:
           this.generated_at = in.readLong();
           break;
 

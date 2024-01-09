@@ -8,9 +8,9 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.Consumed;
-import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +20,11 @@ import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
+import org.springframework.kafka.config.StreamsBuilderFactoryBeanConfigurer;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,37 +66,18 @@ public class StreamConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, ClientMessage> consumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                bootstrapAddress);
-        props.put(
-                ConsumerConfig.GROUP_ID_CONFIG,
-                "demo-1");
-        props.put(
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class);
-        props.put(
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                io.confluent.kafka.serializers.KafkaAvroDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(props);
+    public StreamsBuilderFactoryBeanConfigurer configurer() {
+        return fb -> fb.setStateListener((newState, oldState) -> {
+            System.out.println("State transition from " + oldState + " to " + newState);
+        });
     }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, ClientMessage>
-    kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, ClientMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
-
 
     @Bean
     public KStream<String, ClientMessage> kStream(StreamsBuilder kStreamBuilder) {
-        KStream<String, ClientMessage> stream = kStreamBuilder.stream(inTopic, Consumed.with(stringSerde, valueSpecificAvroSerde));
-        this.kstreamProcessor.process(stream);
+        KStream<String, ClientMessage> stream = kStreamBuilder.stream(inTopic);
+        stream
+                .groupByKey();
+        stream.print(Printed.toSysOut());
         return stream;
     }
-
 }
