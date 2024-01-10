@@ -105,7 +105,7 @@ CREATE TABLE air_latest WITH (value_format='AVRO') AS
     LATEST_BY_OFFSET(id) as id,
     LATEST_BY_OFFSET(message) as message
   FROM air_stream 
-  GROUP BY CLIENT EMIT CHANGES;
+  GROUP BY CLIENT;
 SELECT * FROM air_latest EMIT CHANGES;
 ```
 
