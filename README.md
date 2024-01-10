@@ -87,12 +87,36 @@ java -jar stream/target/stream-0.0.1-SNAPSHOT.jar --server.port=8055
 ```
 
 
-### ksqlDB
+### ksqlDB get unique
+
+```shell
+./ksql http://localhost:8088 
+SET 'auto.offset.reset' = 'earliest';
+```
+
+#### Easy aggregation
+```shell
+CREATE STREAM air_stream WITH (kafka_topic='air-fluff', value_format='AVRO');
+CREATE TABLE air_latest WITH (value_format='AVRO') AS 
+  SELECT 
+    CLIENT,
+    LATEST_BY_OFFSET(unique_id) as latest_id, 
+    LATEST_BY_OFFSET(key) as key,
+    LATEST_BY_OFFSET(id) as id,
+    LATEST_BY_OFFSET(message) as message
+  FROM air_stream 
+  GROUP BY CLIENT EMIT CHANGES;
+SELECT * FROM air_latest EMIT CHANGES;
+```
+
+#### Theory Only!
 ```shell
 LIST TOPICS;
 SET 'auto.offset.reset' = 'earliest';
 CREATE STREAM air_stream WITH (kafka_topic='air-fluff', value_format='AVRO');
-CREATE TABLE air_latest WITH (value_format='AVRO') AS SELECT CLIENT, LATEST_BY_OFFSET(unique_id) as latest_id FROM air_stream GROUP BY CLIENT EMIT CHANGES;
-CREATE TABLE air_table (unique_id_key VARCHAR PRIMARY KEY) WITH (kafka_topic='air-fluff', value_format='AVRO');
-SELECT * FROM air_stream INNER JOIN air_table ON air_table.latest_id = air_stream.unique_id EMIT CHANGES;
+CREATE STREAM air_stream_by_unique_id with (value_format='AVRO') AS SELECT * FROM air_stream PARTITION BY unique_id;
+#CREATE TABLE air_table_by_unique_id (unique_id varchar primary key) WITH (kafka_topic='AIR_STREAM_BY_UNIQUE_ID', value_format='AVRO');
+CREATE TABLE air_table_by_unique_id (latest_id varchar PRIMARY KEY, client varchar) with (value_format='AVRO') AS SELECT LATEST_BY_OFFSET(unique_id) as latest_id, CLIENT FROM AIR_STREAM_BY_UNIQUE_ID GROUP BY CLIENT EMIT CHANGES;
+CREATE TABLE air_latest WITH (value_format='AVRO') AS SELECT LATEST_BY_OFFSET(unique_id) as latest_id, CLIENT FROM air_table_by_unique_id GROUP BY CLIENT EMIT CHANGES;
+CREATE STREAM air_stream_latest AS SELECT * FROM air_stream_by_unique_id INNER JOIN air_latest ON air_stream_by_unique_id.unique_id=air_latest.latest_id EMIT CHANGES;
 ```
